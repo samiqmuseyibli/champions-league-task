@@ -12,8 +12,4 @@ class Club extends Model
     public function totalGames(){
         return $this->hasMany(self::class)->where('home_id', $this->id)->orWhere('away_id', $this->id);
     }
-
-    public function calculatePrediction(){
-        return '';
-    }
 }

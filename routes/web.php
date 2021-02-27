@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\ClubController;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\GameController;
+use App\Http\Controllers\FixtureController;
 use App\Http\Controllers\LeagueController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,9 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LeagueController::class, 'index'])->name('home');
 
+//Group
 Route::get('/new', [LeagueController::class, 'index'])->name('new');
 Route::post('/new', [LeagueController::class, 'create']);
 
-Route::get('/table', [GameController::class, 'index'])->name('table');
-Route::get('/game', [GameController::class, 'game'])->name('game');
-Route::post('/game', [GameController::class, 'changeGameScore']);
+Route::get('/table', [FixtureController::class, 'index'])->name('table');
+
+//Group
+Route::get('/fixture', [FixtureController::class, 'fixture'])->name('fixture');
+Route::post('/fixture', [FixtureController::class, 'changefixtureScore']);

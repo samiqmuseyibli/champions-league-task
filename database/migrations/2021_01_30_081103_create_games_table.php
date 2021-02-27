@@ -13,7 +13,7 @@ class CreateGamesTable extends Migration
      */
     public function up()
     {
-        Schema::create('games', function (Blueprint $table) {
+        Schema::create('fixtures', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('home_id');
             $table->unsignedBigInteger('away_id');
@@ -25,7 +25,7 @@ class CreateGamesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('games', function (Blueprint $table) {
+        Schema::table('fixtures', function (Blueprint $table) {
             $table->foreign('home_id')->references('id')->on('clubs');
             $table->foreign('away_id')->references('id')->on('clubs');
         });
@@ -38,6 +38,6 @@ class CreateGamesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('games');
+        Schema::dropIfExists('fixtures');
     }
 }

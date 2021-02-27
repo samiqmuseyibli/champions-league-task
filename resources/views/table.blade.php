@@ -5,11 +5,11 @@
         <div class="content clearfix">
             <section class="body mb-5 mt-3 pt-3">
                 <h2 class="section-heading mt-5 mb-5">{{ $league->name }}</h2>
-                <h5 class="d-flex justify-content-center pb-2">Game table
+                <h5 class="d-flex justify-content-center pb-2">Fixtures table
                     @if ($tour < 6)
                         |
                         <span>
-                            <a href=" {{ route('game', ['tour' => 'all']) }}">&nbspPlay all games</a>
+                            <a href=" {{ route('fixture', ['tour' => 'all']) }}">&nbspPlay all fixtures</a>
                         </span>
                     @else
                         |<span>
@@ -22,25 +22,25 @@
                         <thead class="">
                             <tr>
                                 <th scope="col">#Tours</th>
-                                <th scope="col">Games</th>
+                                <th scope="col">Fixtures</th>
                                 <th scope="col">Scores</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($games as $game)
+                            @foreach ($fixtures as $fixture)
                                 <tr>
-                                    <th scope="row">{{ $game->tour }}</th>
-                                    <td>{{ $game->homeClub->name }} - {{ $game->awayClub->name }}</td>
+                                    <th scope="row">{{ $fixture->tour }}</th>
+                                    <td>{{ $fixture->homeClub->name }} - {{ $fixture->awayClub->name }}</td>
                                     <td>
-                                        <input id="home_{{ $game->id }}" type="text"
-                                            value="{{ $game->home_goal_count ?? '-' }}"> :
-                                        <input id="away_{{ $game->id }}" type="text"
-                                            value="{{ $game->away_goal_count ?? '-' }}">
+                                        <input id="home_{{ $fixture->id }}" type="text"
+                                            value="{{ $fixture->home_goal_count ?? '-' }}"> :
+                                        <input id="away_{{ $fixture->id }}" type="text"
+                                            value="{{ $fixture->away_goal_count ?? '-' }}">
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-right float-right btnEdit"
-                                            data-id="{{ $game->id }}">
+                                            data-id="{{ $fixture->id }}">
                                             edit
                                         </button>
                                     </td>
@@ -52,7 +52,7 @@
                         <div role="menu" class="float-right">
                             <span>
                                 @if ($tour < 6)
-                                    <a class="btn btn-dark mr-2" href="{{ route('game', ['tour' => $tour]) }}">Play
+                                    <a class="btn btn-dark mr-2" href="{{ route('fixture', ['tour' => $tour]) }}">Play
                                         #{{ ++$tour }} tour</a>
                                 @else
                                     <p class="btn mr-2">Finished</p>
@@ -106,10 +106,10 @@
             var home = $("#home_" + id).val();
             var away = $("#away_" + id).val();
             let formData = new FormData();
-            formData.append('game', id);
+            formData.append('fixture', id);
             formData.append('home', home);
             formData.append('away', away);
-            fetch("{{ route('game') }}", {
+            fetch("{{ route('fixture') }}", {
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },

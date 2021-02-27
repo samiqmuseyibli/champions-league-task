@@ -6,7 +6,7 @@
             <h3 class="section-heading">
                 Create new League
             </h3>
-            <p>Note: Clubs will be chosen randomly and all tours and tour games will be created beforehand.</p>
+            <p>Note: Clubs will be chosen randomly and all tours and tour fixtures will be created beforehand.</p>
             <div class="clearfix">
                 <span class="btn btn-primary" id="create">Create</span>
             </div>
