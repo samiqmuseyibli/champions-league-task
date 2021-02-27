@@ -59,26 +59,26 @@ class FixtureController extends Controller
         //if clicked "Play all Fixtures" - button
         if ($request->tour == "all") {
             for ($tour = 1; $tour <= 6; $tour++) {
-                $Fixtures = $this->model->with(['homeClub', 'awayClub'])->where('league_id', $league->id)->where('tour', $tour)->get();
-                $this->playFixtures($Fixtures);
+                $fixtures = $this->model->with(['homeClub', 'awayClub'])->where('league_id', $league->id)->where('tour', $tour)->get();
+                $this->playFixtures($fixtures);
             }
         } else {
             //if clicked "Next tour" - button
             $tour = $request->tour + 1;
-            $Fixtures = $this->model->with(['homeClub', 'awayClub'])->where('league_id', $league->id)->where('tour', $tour)->get();
-            $this->playFixtures($Fixtures);
+            $fixtures = $this->model->with(['homeClub', 'awayClub'])->where('league_id', $league->id)->where('tour', $tour)->get();
+            $this->playFixtures($fixtures);
         }
         $leagueService->updateClubPoints($league);
         return redirect()->route('table', ['tour' => $tour ?? '']);
     }
 
-    public function playFixtures($Fixtures)
+    public function playFixtures($fixtures)
     {
-        foreach ($Fixtures as $Fixture) {
-            if ($Fixture->played_at == null) {
-                $homeGoals = $this->createHomeScore($Fixture->homeClub->percent, true);
-                $awayGoals = $this->createAwayScore($Fixture->awayClub->percent, false);
-                $this->updateFixtureResult($Fixture->id, $homeGoals, $awayGoals);
+        foreach ($fixtures as $fixture) {
+            if ($fixture->played_at == null) {
+                $homeGoals = $this->createHomeScore($fixture->homeClub->percent, true);
+                $awayGoals = $this->createAwayScore($fixture->awayClub->percent, false);
+                $this->updateFixtureResult($fixture->id, $homeGoals, $awayGoals);
             }
         }
         return true;
@@ -86,11 +86,11 @@ class FixtureController extends Controller
 
     public function updateFixtureResult($id, $homeGoals, $awayGoals)
     {
-        $Fixture = $this->model->find($id);
-        $Fixture->played_at = now();
-        $Fixture->home_goal_count = $homeGoals;
-        $Fixture->away_goal_count = $awayGoals;
-        $Fixture->save();
+        $fixture = $this->model->find($id);
+        $fixture->played_at = now();
+        $fixture->home_goal_count = $homeGoals;
+        $fixture->away_goal_count = $awayGoals;
+        $fixture->save();
         return true;
     }
 
@@ -128,14 +128,16 @@ class FixtureController extends Controller
      */
     public function changeFixtureScore(Request $request, LeagueService $leagueService): JsonResponse
     {
-        //return response()->json($request->all());
         try {
             $fixture = $this->model->find($request->input('fixture'));
-            $fixture->home_goal_count = $request->input('home');
-            $fixture->away_goal_count = $request->input('away');
-            $fixture->save();
-            $leagueService->updateClubPoints($fixture->league);
-            return response()->json(['success' => true, 'message' => 'successfully updated'], Response::HTTP_ACCEPTED);
+            if ($fixture->home_goal_count != null && $fixture->away_goal_count != null) {
+                $fixture->home_goal_count = $request->input('home');
+                $fixture->away_goal_count = $request->input('away');
+                $fixture->save();
+                $leagueService->updateClubPoints($fixture->league);
+                return response()->json(['success' => true, 'message' => 'successfully updated'], Response::HTTP_ACCEPTED);
+            }
+            return response()->json(['success' => false, 'message' => 'game not played yet'], Response::HTTP_BAD_GATEWAY);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

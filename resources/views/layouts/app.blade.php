@@ -31,10 +31,8 @@
     <header>
         <nav class="navbar">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('new') }}">
-                    <img class="logo-img" height="80"
-                        src="https://lh3.googleusercontent.com/proxy/wgNWvNFiyHNw4iXbxdQjJ1w6F_wf85cDvfShWTFg9cz7Sf5bxXiW70bQON8PlUcwYP_EYVBTIqnrZvzMq1ztRudJ0G-50qttMOenImP34K1fc5Hf2FCOPfOIW9m6gtOwy1UPWal4zw"
-                        alt="">
+                <a class="navbar-brand" href="{{ route('new') }}"> <img class="logo-img" height="80"
+                        src="https://www.fifplay.com/img/public/premier-league-3-logo.png" alt="">
                 </a>
             </div>
         </nav>
